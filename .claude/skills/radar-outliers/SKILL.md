@@ -16,6 +16,34 @@ Don't build or suggest automation unless the user explicitly asks for it — thi
 the *process*, not a tool. If a future iteration should use an API or script, that's the host
 project's decision to make and record, not something this skill assumes.
 
+## Requirements
+
+This skill needs some way to actually view public YouTube pages — a browser tool, or a fetch tool
+that renders JavaScript-heavy pages, available to the agent. **If nothing like that is available
+in this environment, say so plainly and stop** — ask the user to paste the data manually (channel,
+video title, view count, upload date) instead of inventing numbers or guessing at what a channel's
+recent uploads probably look like. A fabricated cycle is worse than no cycle: it produces
+confident-sounding patterns with no real basis.
+
+**Use a logged-out / private-browsing context when scanning competitors**, not the channel
+owner's own logged-in YouTube session — scanning while logged in mixes personal watch-history
+signals into recommendations and, more importantly, ties competitor research to the channel's own
+account. Public page scraping of this kind sits in a gray area of YouTube's Terms of Service;
+treat it as "look, don't scrape at scale" — a handful of manual page loads per channel per cycle,
+not thousands of automated requests.
+
+**Keep raw page data out of the conversation.** Don't paste full page HTML, full JSON responses,
+or a whole channel's video list into context — extract only title, view count, upload date, and a
+short visual description per video as you go, the same way you'd take notes by hand. Scanning
+10+ channels' full raw pages verbatim is an easy way to blow through context and cost on a single
+cycle for no benefit — the corpus table is the useful artifact, not the raw response that produced
+it.
+
+**Time-box the cycle.** A full cycle (scan + attributes + hypothesis + patterns + log) should take
+roughly 30–45 minutes of real work, similar to what a human doing this by hand would spend. If a
+single channel is taking much longer than a few minutes to read (paywalled stats, broken page,
+suspiciously slow), skip it and note the skip rather than burning the whole cycle on one channel.
+
 ## First run in a new project — adapt before scanning
 
 This skill ships generic. Before the first cycle in a given project, spend one pass establishing
@@ -30,10 +58,27 @@ context instead of assuming EveryPlaceExplained-style "1 country / 10 cities" pa
 2. **Find where to log a cycle.** Look for an existing strategy/docs folder pattern in the
    project. If nothing fits, ask the user where cycles should live, or default to creating
    `radar-outliers/CYCLES.md` at the project root and say so explicitly in your first reply so the
-   user can redirect you.
+   user can redirect you. Start it from `templates/CYCLE_TEMPLATE.md` in this skill so every cycle
+   is logged in the same shape — don't improvise a new structure each time.
 3. **Confirm the corpus.** Ask the user for their competitor/adjacent-channel list if one isn't
    already documented somewhere in the project, rather than inventing channel names. A wrong
    corpus produces confident-sounding nonsense.
+
+   A corpus that actually works tends to split into three rings — ask the user to fill each,
+   don't assume they'll volunteer all three unprompted:
+
+   | Ring | Suggested size | What it is | What it teaches |
+   |---|---|---|---|
+   | **1 — Direct competitors** | ~6–10 | Same format, same promise, same audience | Patterns transfer almost 1:1 |
+   | **2 — Adjacent** | ~4–8 | Different format, same underlying promise/niche | Teaches the *promise*, not the format |
+   | **3 — Rising, rotating** | ~3–5, swapped every couple months | Channel under ~12 months old with uploads well above its own median | The most valuable and most perishable ring — it catches what's *starting* to work, not what already won |
+
+   A working minimum is a handful of channels total (even 5–6 across the first two rings is
+   usable); the full 15–20-channel spread is a target to grow into, not a requirement to start.
+   **Finding Ring 3 without a paid tool:** open a Ring 1 outlier and look at the channels
+   recommended alongside it. Small, unfamiliar channels that keep showing up there are already
+   getting distribution next to a channel that matters — that's YouTube itself pointing at who's
+   rising.
 
 Once that context exists (in the project's own docs, not hardcoded here), every later cycle can
 skip straight to scanning.
@@ -54,7 +99,9 @@ skip straight to scanning.
 
 Check the project's own cycle log (see "First run" above) for the most recent cycle on this
 topic/niche. Don't re-run a scan whose corpus and hypothesis are still fresh — read it, decide if
-it still applies, and only re-scan if the topic changed or the last cycle is stale.
+it still applies, and only re-scan if the topic changed or the last cycle is stale. While there,
+check whether any older cycle is sitting with a blank grade field on a video that's since had time
+to accumulate real numbers — if so, do step 9 for that cycle before starting a new one.
 
 ### 2. State the target
 
@@ -69,8 +116,16 @@ For each channel in the corpus: open the **"Latest" / "Most recent" tab, never "
 worked *once*, not what's working *now*, which is the only thing actionable.
 
 - Window: last ~60–90 days (tighten for a fast-moving niche, widen for a slow-cadence channel).
-- Compute the **median** (not mean) view count of the last ~10 uploads. A single viral outlier
-  distorts a mean and breaks the whole comparison.
+- **Compute Shorts and long-form as two separate baselines, never mixed.** Shorts view counts
+  inflate for reasons that have nothing to do with packaging quality (autoplay, feed behavior);
+  folding them into the same median as long-form videos manufactures false outliers on one side
+  and buries real ones on the other. If the target video is long-form, scan long-form uploads only.
+- Compute the **median** (not mean) view count of the last ~10 uploads within that format. A
+  single viral outlier distorts a mean and breaks the whole comparison.
+- **Exclude uploads younger than ~7 days from the median baseline itself** — they haven't had time
+  to reach their real view count yet, and including them drags the median down artificially,
+  which then inflates the multiplier of everything else. It's fine to track a very recent upload
+  separately and revisit it once it ages past that window.
 - Flag anything at **≥3× that channel's own median** as an outlier for this cycle. Treat 3× as a
   starting threshold, not a law — adjust it after 2–3 cycles if it produces too many or too few
   outliers, and log the adjustment as a decision, not a silent tweak.
@@ -146,11 +201,32 @@ has. If none exists yet, a reasonable default:
 
 ### 8. Log the cycle
 
-Append the cycle to wherever cycles are being tracked in this project (see "First run" above):
-objective, corpus used, outlier table, present/absent attributes, the hypothesis sentence, the
-patterns (≤5), and the real limitations of that cycle's sample. If the resulting editorial call
-(final title, a topic-order change) came from more than just this cycle's data, say so — and if
-the host project has its own decisions log, record the decision there too, not just the finding.
+Append the cycle to wherever cycles are being tracked in this project (see "First run" above),
+using `templates/CYCLE_TEMPLATE.md`: objective, corpus used, outlier table, present/absent
+attributes, the hypothesis sentence, the patterns (≤5), and the real limitations of that cycle's
+sample. If the resulting editorial call (final title, a topic-order change) came from more than
+just this cycle's data, say so — and if the host project has its own decisions log, record the
+decision there too, not just the finding. Leave the cycle's **grade field blank** — it can't be
+filled until step 9.
+
+### 9. Grade the cycle once the video has real numbers
+
+This is the step that turns cycles into an actual track record instead of a pile of guesses. Once
+the video this cycle informed has enough real data (a sensible default: ~7–14 days after publish,
+or whatever the channel normally waits before trusting a metric), come back to that cycle's log
+entry and fill in the grade:
+
+- **Confirmed** — the video's title/thumbnail performance (CTR, retention, or whatever the channel
+  already tracks) is consistent with the hypothesis.
+- **Rejected** — it isn't, and the hypothesis should be treated as weakened, not repeated blindly
+  next cycle.
+- **Inconclusive** — too little data, too many other variables changed at once, or the metric
+  the channel cares about wasn't cleanly attributable to packaging.
+
+Do this even when nobody asks — an ungraded cycle is a cycle nobody ever learned from. If several
+cycles in a row confirm the same pattern, that's worth promoting from "hypothesis" to something
+closer to a house rule in the channel's own strategy docs; if a pattern gets rejected twice, retire
+it from the standard attribute checklist instead of testing it forever.
 
 ## What this skill is not
 
