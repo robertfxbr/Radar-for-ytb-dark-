@@ -20,9 +20,15 @@ videos, this skill walks through a repeatable cycle:
    original" visual-reference flow — never copying a competitor's actual title or thumbnail.
 6. Log the cycle (from a shipped template, so every cycle stays comparable) so the next one builds
    on it instead of starting cold.
-7. Once the informed video has real numbers (~7–14 days out), **grade the cycle** —
-   confirmed/rejected/inconclusive — so cycles accumulate into an actual track record instead of a
-   pile of ungraded guesses.
+7. Once the informed video has real numbers (timed to that channel's own view-accumulation speed,
+   not a flat calendar rule), **grade the cycle** — confirmed/rejected/inconclusive — so cycles
+   accumulate into an actual track record instead of a pile of ungraded guesses.
+8. Every 5–10 cycles, **meta-review** the whole log: promote patterns confirmed across multiple
+   topics into standing rules, retire patterns rejected more than once.
+
+A lighter **qualitative mode** (no median math, just reading recent titles/thumbnails) is available
+for quick checks or when view counts are hidden — clearly logged as weaker evidence than a full
+cycle, never dressed up as one.
 
 It's built to **adapt to whatever channel it's installed into** — on first run in a new project it
 looks for your existing channel context (README, style guide, decisions log) and asks rather than

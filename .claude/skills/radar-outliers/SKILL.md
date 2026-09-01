@@ -80,6 +80,14 @@ context instead of assuming EveryPlaceExplained-style "1 country / 10 cities" pa
    getting distribution next to a channel that matters — that's YouTube itself pointing at who's
    rising.
 
+   **A corpus channel that visibly pivoted away from the niche is a finding, not a chore.** If a
+   channel in the corpus has moved on — a travel channel that's now posting gear reviews, a finance
+   channel now doing vlogs — don't just quietly swap it out. Log it (channel, what it pivoted to,
+   roughly when) before replacing it. One pivot is noise; two or three pivoting toward the same
+   adjacent format in the same cycle is a real signal that part of the niche is migrating, and
+   that's worth surfacing on its own, separate from whatever title/thumbnail patterns this cycle
+   finds.
+
 Once that context exists (in the project's own docs, not hardcoded here), every later cycle can
 skip straight to scanning.
 
@@ -110,6 +118,15 @@ thumbnail? both? is the underlying angle/thesis even settled yet?). Skipping thi
 into unfocused data collection.
 
 ### 3. Scan the corpus
+
+**Full mode vs. light/qualitative mode.** The full protocol below (median, ≥3× threshold,
+independence rule) is the default. But run a **light mode** instead when view counts are hidden by
+the creator, when there isn't time for a full cycle, or when the goal is a quick gut-check on one
+topic rather than a periodic corpus sweep: skip the median math, just read recent titles/thumbnails
+across the corpus and note what repeats. Log light-mode findings as **signal, not outliers** — one
+line in the hypothesis making clear this cycle has no statistical basis, just a qualitative read.
+Light mode is not a shortcut to skip logging or skip the hypothesis sentence — it's a real cycle,
+just a weaker one, and it should say so plainly rather than borrow the confidence of a full cycle.
 
 For each channel in the corpus: open the **"Latest" / "Most recent" tab, never "Most popular."**
 "Most popular" mixes videos from different years and different algorithm regimes — it shows what
@@ -209,12 +226,22 @@ just this cycle's data, say so — and if the host project has its own decisions
 decision there too, not just the finding. Leave the cycle's **grade field blank** — it can't be
 filled until step 9.
 
+**Archive before the log gets expensive to read.** A biweekly cadence adds up — a year of cycles is
+~25 entries, and reading the whole log back in step 1 gets slower and pricier every cycle. Once the
+log passes roughly 1,500–2,000 lines (or a year of history, whichever comes first), move older
+cycles into a dated archive file (e.g. `CYCLES_2026.md`) and leave a short index of what moved and
+where in the live log. Never delete a past cycle, graded or not — an archived rejected pattern is
+still worth being able to find later.
+
 ### 9. Grade the cycle once the video has real numbers
 
 This is the step that turns cycles into an actual track record instead of a pile of guesses. Once
-the video this cycle informed has enough real data (a sensible default: ~7–14 days after publish,
-or whatever the channel normally waits before trusting a metric), come back to that cycle's log
-entry and fill in the grade:
+the video this cycle informed has enough real data, come back to that cycle's log entry and fill
+in the grade. **"Enough data" isn't a fixed calendar number** — a channel that gets most of its
+views in the first 48 hours and one that's a slow burn accumulating views over months shouldn't
+share a flat 7–14 day rule. Check how the *channel's own* past videos typically accumulate views
+(if that's known or easy to check) and grade once this video's curve has had a comparable amount of
+time to develop; ~7–14 days is a reasonable fallback only when that history isn't available.
 
 - **Confirmed** — the video's title/thumbnail performance (CTR, retention, or whatever the channel
   already tracks) is consistent with the hypothesis.
@@ -223,10 +250,24 @@ entry and fill in the grade:
 - **Inconclusive** — too little data, too many other variables changed at once, or the metric
   the channel cares about wasn't cleanly attributable to packaging.
 
-Do this even when nobody asks — an ungraded cycle is a cycle nobody ever learned from. If several
-cycles in a row confirm the same pattern, that's worth promoting from "hypothesis" to something
-closer to a house rule in the channel's own strategy docs; if a pattern gets rejected twice, retire
-it from the standard attribute checklist instead of testing it forever.
+Do this even when nobody asks — an ungraded cycle is a cycle nobody ever learned from.
+
+### 10. Meta-review every 5–10 cycles
+
+Grading step 9 one cycle at a time catches obvious repeats, but a lot of the real value of running
+this for a year+ only shows up by scanning the *whole* log at once. Every 5–10 cycles (or whenever
+it's been a couple months since the last meta-review), skim every graded cycle together and ask:
+
+- Which pattern has been **confirmed across multiple different topics**, not just repeated within
+  one series? That's a strong candidate to promote out of "hypothesis" and into a standing rule in
+  the channel's own strategy docs — stronger than any single cycle's evidence on its own.
+- Which pattern has been **rejected more than once**? Retire it from the attribute checklist in
+  step 4 instead of re-testing something the channel's own data has already answered.
+- Is one ring (direct/adjacent/rising) producing most of the confirmed patterns, and the others
+  mostly noise? That's worth adjusting the corpus mix toward, not just noting.
+
+Log the meta-review's conclusions the same place cycles live, clearly marked as a meta-review
+entry rather than a numbered cycle, so it doesn't get graded like one.
 
 ## What this skill is not
 
@@ -250,3 +291,10 @@ a channel's public uploads page is fragile — it can change layout or behavior 
 pattern backed by 3 of 14 independent sources is the strongest evidence available in that cycle,
 not proof. Always cite the basis (how many, out of how many) alongside any pattern — never present
 a small-sample pattern as a settled rule.
+
+**Survivorship bias is baked into the method and can't fully be fixed, only kept in mind.** The
+corpus only contains channels that still exist and still publish — a channel that tried the same
+angle and failed badly enough to quit or pivot is invisible to this scan (the pivot-tracking in
+step 3 catches *some* of this, but only for channels that pivoted rather than vanished outright).
+Every pattern found here is a pattern that worked for the channels currently standing, not
+necessarily a pattern that works in general.

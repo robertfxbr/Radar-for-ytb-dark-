@@ -6,9 +6,13 @@ comparable to each other over time, not just useful in isolation.
 
 ### Cycle NN — YYYY-MM-DD — target: <video/topic this cycle serves>
 
+**Mode:** `FULL` | `LIGHT (qualitative, no median math)` — <if LIGHT, one line on why full mode
+wasn't run: hidden view counts, time-constrained, quick single-topic check, etc.>
+
 **Objective:** <one sentence — what question this cycle needs to answer>
 
-**Grade (fill in during step 9, ~7–14 days after the video publishes):**
+**Grade (fill in during step 9, once the video has enough real data for *this* channel's
+typical view-accumulation speed — ~7–14 days is a fallback, not a rule):**
 `UNGRADED` | `CONFIRMED` | `REJECTED` | `INCONCLUSIVE` — <one line why>
 
 #### Corpus
@@ -19,7 +23,11 @@ comparable to each other over time, not just useful in isolation.
 | 2 | | | |
 | 3 (rotating) | | | entered this cycle / due to rotate: <date> |
 
-#### Outliers (≥3× the channel's own recent median, same format only)
+**Pivoted out this cycle:** <channel — what it pivoted to — roughly when noticed; leave blank if
+none. Two or more pivots toward the same adjacent format in one cycle is itself a finding — call
+it out in Patterns below if so.>
+
+#### Outliers (≥3× the channel's own recent median, same format only — skip this table in LIGHT mode)
 
 | Channel | Multiple | Views | Days published | Title |
 |---|---:|---:|---:|---|
